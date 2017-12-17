@@ -1,0 +1,12 @@
+*.opendb
+*.db
+*.vsxproj
+*.filters
+*.sln
+*.tlog
+*.idb
+*.vcxproj
+
+/Debug
+/*/Debug
+
