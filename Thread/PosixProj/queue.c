@@ -10,7 +10,7 @@ void queue_init(queue* myroot)
 
 void queue_put(queue* myroot, node* mynode)
 {
-	if(myroot == NULL)
+	/*if(myroot == NULL)
 	{
 		myroot = malloc(sizeof(struct queue));
 		queue_init(myroot);
@@ -18,9 +18,9 @@ void queue_put(queue* myroot, node* mynode)
 
 	if(mynode == NULL)
 		return;
-
+	*/
 	mynode->next = NULL;
-	if(myroot->tail == NULL)
+	if(myroot->tail != NULL)
 		myroot->tail->next = mynode;
 	myroot->tail = mynode;
 	if(myroot->head == NULL)

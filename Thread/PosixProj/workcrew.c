@@ -4,7 +4,7 @@
 #include "control.h"
 #include "queue.h"
 #include "debug.h"
-
+  
 struct work_queue{
 	data_control control;
 	queue work;
@@ -96,6 +96,7 @@ int create_threads(void)
 		printf("create thread %d\n",x);
 		numthreads++;
 	}
+	printf("test3333");
 	return 0;
 }
 
@@ -133,9 +134,9 @@ int main()
 		join_threads();
 		dabort();
 	}
-
+	printf("test1111");
 	pthread_mutex_lock(&wq.control.mutex);
-	for(x=0;x<100;x++)
+	for(x=0;x<16000;x++)
 	{
 		mywork = malloc(sizeof(wnode));
 		if(!mywork)
@@ -147,7 +148,7 @@ int main()
 		mywork->jobnum = x;
 		queue_put(&wq.work,(node*)mywork);
 	}
-
+	printf("test2222");
 	pthread_mutex_unlock(&wq.control.mutex);
 	pthread_cond_broadcast(&wq.control.cond);
 	printf("sleeping\n");
