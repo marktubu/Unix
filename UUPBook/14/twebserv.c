@@ -45,17 +45,21 @@ int main(int ac, char* av[])
 		fprintf(stderr,"usage:tws portnum\n");
 		exit(1);
 	}
-
+	
+	printf("make_server_socket");
 	sock = make_server_socket(atoi(av[1]));
 	if(sock == -1)
 	{
 		perror("making socket");
 		exit(2);
 	}
+	
+	printf("set up attr");
 
 	setup(&attr);
 	while(1)
 	{
+		printf("accept socket");
 		fd = accept(sock,NULL,NULL);
 		server_requests ++;
 		fdptr = malloc(sizeof(int));
