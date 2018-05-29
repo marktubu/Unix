@@ -5,6 +5,8 @@
 
 #define READ 0
 #define WRITE 1
+//pipe is designed to use fd[0] to read and fd[1] to write
+//so the value of the two Micros are constant(unchangable)
 
 FILE* popen(const char* command, const char* mode)
 {
