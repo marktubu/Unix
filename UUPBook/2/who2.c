@@ -4,27 +4,43 @@
 #include<unistd.h>
 #include<stdlib.h>
 #include<time.h>
+#include<string.h>
 
-//#define SHOWHOST
+#define UTMP_ARRAY_SIZE 16
 
 void show_info(struct utmp*);
+int utmp_next(int, struct utmp*, int);
 
 int main()
 {
-	struct utmp current_record;
 	int utmpfd;
-	int reclen = sizeof(current_record);
+	struct utmp buf[UTMP_ARRAY_SIZE];
+	int buflen = sizeof(buf);
 
-	if((utmpfd = open(UTMP_FILE, O_RDONLY)) == -1)
+	//if((utmpfd = open(UTMP_FILE, O_RDONLY)) == -1)
+	if((utmpfd = open("utmp", O_RDONLY)) == -1)
 	{
 		perror(UTMP_FILE);
 		exit(1);
 	}
-
-	while(read(utmpfd, &current_record, reclen) == reclen)
-		show_info(&current_record);
+	printf("utmp file %s\n",UTMP_FILE);	
+	while(utmp_next(utmpfd, buf, buflen) > 0)
+	{
+		for(int i=0;i<UTMP_ARRAY_SIZE;i++)
+		{
+			struct utmp* u =(struct utmp*) (buf+i);
+			if(u!=NULL)
+				show_info(u);
+		}
+	}
 	close(utmpfd);
 	return 0;
+}
+
+int utmp_next(int utmpfd, struct utmp* buf, int buflen)
+{
+	memset(buf,0,buflen);
+	return read(utmpfd, buf, buflen);
 }
 
 void show_info(struct utmp* utbufp)
