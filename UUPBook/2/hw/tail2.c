@@ -1,75 +1,41 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <regex.h>
 #include <string.h>
+#include <stdio.h>
 
-#define SUBSLEN 10
-#define BUFLEN 1024
+int main(){
+    regex_t re;
+    regmatch_t subs[1024];
+    char matched[1024];
+    char src[1024]="beginworldendtestbeginworkendtest";
+    char pattern[1024] = "begin(.*?)end";
 
-int getarg(char* src, char* patten)
-{
-	int err;
-	regex_t re;
-	size_t len;
-	regmatch_t subs[SUBSLEN];
-	char matched[BUFLEN];
+    int err = regcomp(&re, pattern, REG_EXTENDED);
+    if (err) {
+        printf("regex error");
+        return 1;
+    }
 
-	err = regcomp(&re,patten,REG_EXTENDED);
-	if(err)
-	{
-		printf("error: regcomp: %d\n", err);
-		return 0;
-	}
-	printf("patten %s\n", patten);
+    const char *ptr = src;
+    while (strlen(ptr) > 0) {
+        memset(subs, 0, sizeof(subs));
+        err = regexec(&re, ptr, (size_t)1024, subs, REG_NOTBOL);
+        if (err == REG_NOMATCH) {
+            break;
+        } else if (err) {
+            char errbuf[1024];
+            regerror(err, &re, errbuf, sizeof(errbuf));
+            printf("errbuf:%s\n", errbuf);
+            break;
+        }
+        int len = subs[0].rm_eo - subs[0].rm_so;
+        memcpy(matched, ptr + subs[0].rm_so, len);
+        matched[len] = '\0';
+        printf("match:%s\n", matched);
+        ptr = ptr + subs[0].rm_so + len;
+    }
 
-	err = regexec(&re, src, (size_t)SUBSLEN, subs, 0);
-	if(err == REG_NOMATCH)
-	{
-		printf("no match...\n");
-		regfree(&re);
-		return 0;
-	}
-	else if(err)
-	{
-		printf("other error\n");
-		return 0;
-	}
+    regfree(&re);
 
-	for(int i=0;i<re.re_nsub;i++)
-	{
-		len = subs[i].rm_eo - subs[i].rm_so;
-		if(i==0)
-		{
-			printf("begin: %d, len = %d ",subs[i].rm_so,len);	
-		}
-		else
-		{
-			printf("subexpression %d begin: %d, len = %d ",i,subs[i].rm_so,len);
-		}
-
-		memcpy(matched,src + subs[i].rm_so, len);
-		printf("match %s\n",matched);
-	}
-
-	return 0;
-}
-
-int main(int ac, char* av[])
-{
-	int linecount = 1;
-	char* filename;
-	if(ac == 2)
-	{
-		filename = av[1];
-	}
-	else if(ac == 3)
-	{
-		char* linenum = "begineerrttyyyytendsssssss";
-		char patten[] = "begin(.*?)end";
-		linecount = getarg(linenum,patten);
-		filename = av[2];
-	}
-
-	return 0;
+    return 0;
 }
