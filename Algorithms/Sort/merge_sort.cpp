@@ -7,9 +7,9 @@ template<unsigned N>
 void merge(int (&arr)[N], int p, int q, int r)
 {
     //p -- q
-    int * arr_l = new int[q-p+2];
+    int * arr_l = new int[q-p+1];
     //q+1 -- r
-    int * arr_r = new int[r-q+1];
+    int * arr_r = new int[r-q];
 
     for(int i=0;i<q-p+1;++i)
     {
@@ -22,9 +22,6 @@ void merge(int (&arr)[N], int p, int q, int r)
         int j = i+q+1;
         arr_r[i] = arr[j];
     }
-
-    arr_l[q-p+1] = INT_MAX;
-    arr_r[r-q] = INT_MAX;
 
     int l_index = 0;
     int r_index = 0;
@@ -39,6 +36,24 @@ void merge(int (&arr)[N], int p, int q, int r)
         {
             arr[k] = arr_r[r_index];
             r_index ++;
+        }
+
+        if(l_index > q-p)
+        {
+            for(int i=r_index;i<r-q;++i)
+            {
+                arr[++k] = arr_r[i];
+            }
+            break;
+        }
+
+        if(r_index > r-q-1)
+        {
+            for(int i=l_index;i<q-p+1;++i)
+            {
+                arr[++k] = arr_l[i];
+            }
+            break;
         }
     }
 

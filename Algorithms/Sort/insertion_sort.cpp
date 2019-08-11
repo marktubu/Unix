@@ -3,6 +3,38 @@
 using namespace std;
 
 template<unsigned N>
+int binary_search(int (&arr)[N], int start, int end, int key)
+{
+    if(start >= end)
+    {
+        if(arr[start] > key)
+        {
+            return start;
+        }
+        else
+        {
+            return start + 1;
+        }
+    }
+
+    int mid = (int)(start + end)/2; 
+
+    if(arr[mid] == key)
+    {
+        return mid+1;
+    }    
+    else if(arr[mid] > key)
+    {
+        return binary_search(arr, start, mid-1, key);
+    }
+    else
+    {
+        return binary_search(arr, mid+1, end, key);
+    }
+    
+}
+
+template<unsigned N>
 void insertion_sort(int (&arr)[N])
 {
     int size = N;
@@ -14,14 +46,23 @@ void insertion_sort(int (&arr)[N])
         //j会变成一个很大的值4294967295,即0xffffffff
         //从而引发段错误Segmentation fault
         //因此将size, i, j的类型改为int
+        
         int j = i-1;
+        /* 改为使用二分查找
         while(j>=0 && arr[j] > key)
         {
             arr[j+1] = arr[j];
             j--;
         }
+        */
+        int index = binary_search(arr, 0, j, key);
 
-        arr[j+1] = key;
+        for(int k=i;k>index;--k)
+        {
+            arr[k] = arr[k-1];
+        }
+        cout<<"index "<<index<<endl;
+        arr[index] = key;
     }
 }
 
