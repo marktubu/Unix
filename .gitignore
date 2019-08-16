@@ -1,3 +1,4 @@
+*.exe
 *.opendb
 *.db
 *.vsxproj
@@ -9,4 +10,4 @@
 
 /Debug
 /*/Debug
-
+/**/.*/
