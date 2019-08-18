@@ -2,8 +2,16 @@
 
 using namespace std;
 
-#define LEFT(i) (2 * i)
-#define RIGHT(i) (2 * i + 1)
+/*
+原始定义为如下定义，在数组第一个值的下标为1的编程语言中是成立的，
+但 C/C++ 中数组第一个值的下标为0，因此需进行+1
+#define LEFT(i) (i << 1)
+#define RIGHT(i) ((i << 1) + 1)
+*/
+
+#define LEFT(i) ((i << 1) + 1)
+#define RIGHT(i) ((i << 1) + 2)
+#define PARENT(i) ((i-1) >> 1)
 
 template<unsigned N>
 void max_heapify(int (&arr) [N], int i, int heap_size)
@@ -63,10 +71,10 @@ void heap_sort(int (&arr)[N], int heap_size)
 
 int main()
 {
-    int array[] = {31, 41, 59,26, 41, 58, 2, 4, 7, 1};
-    heap_sort(array, 10);
+    int array[] = {31, 41, 59,26, 41, 58, 2, 4, 7, 1, 23, 123};
+    heap_sort(array, 12);
 
-    for(int i=0;i<10;++i)
+    for(int i=0;i<12;++i)
     {
         cout << "array : " << array[i] << endl;
     }
