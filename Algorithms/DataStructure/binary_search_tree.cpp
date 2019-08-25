@@ -228,7 +228,6 @@ int main()
 
     for (size_t i = 5; i < 10; i++)
     {
-        //Node node = {i+5, nullptr, nullptr, nullptr, i};
         Node* node = new Node();
         node->key = i+5;
         node->data = i;
@@ -237,13 +236,26 @@ int main()
 
     for (size_t i = 0; i < 5; i++)
     {
-        //Node node = {i+5, nullptr, nullptr, nullptr, i};
         Node* node = new Node();
         node->key = i+5;
         node->data = i;
         insert(pproot, node); 
     }
 
+    Node* ret = search(proot, 12);
+    if(ret != nullptr)
+    {
+        cout<<"search result : key "<< ret->key <<" data : " << ret->data << endl;
+    }
+    else
+    {
+        cout << "key not found : " << 12 << endl;
+    }
+    
+    remove(pproot, 12);
+
+    inorder(proot);
+    
     Node* current = proot;
     while (current != nullptr)
     {
@@ -258,29 +270,5 @@ int main()
         current = current->right;
     }
 
-    inorder(proot);
-    
-    Node* ret = search(proot, 12);
-    if(ret != nullptr)
-    {
-        cout<<"search result : key "<< ret->key <<" data : " << ret->data << endl;
-        inorder(ret);
-    }
-    else
-    {
-        cout << "key not found : " << 12 << endl;
-    }
-
-    ret = search(proot, 122);
-    if(ret != nullptr)
-    {
-        cout<<"search result : key "<< ret->key <<" data : " << ret->data << endl;
-    }
-    else
-    {
-        cout << "key not found : " << 122 << endl;
-    }
-    
-    
     return 0;
 }
