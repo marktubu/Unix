@@ -6,7 +6,7 @@ using namespace std;
 #define GET(pptr) (*pptr)
 #define ADDR(ptr) (&ptr)
 
-#define nullptr NULL
+//efine nullptr NULL
 
 typedef struct node
 {
@@ -192,15 +192,15 @@ void remove(Node** root, int key)
     else
     {
         Node* successor = tree_successor(result);
-        if(successor == result->right)
+        if(successor->parent != result)
         {
-            transplant(root, result, successor);
+            transplant(root, successor, successor->right);
+            successor->right = result->right;
+            successor->right->parent = successor;
         }
-        else
-        {
-            
-        }
-        
+        transplant(root, result, successor);
+        successor->left = result->left;
+        successor->left->parent = successor;
     }
     
 }
