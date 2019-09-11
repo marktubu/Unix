@@ -64,23 +64,20 @@ int main(int argc, char ** argv)
         exit(1);
     }
 
-    char* tmpstr = (char*) malloc(256);
+    char* tmpstr = (char*) malloc(MAX);
     size_t buffersize = MAX;
 
     while (!feof(srcfile))
     {
         strcpy(tmpstr, "\0");
-        //fgets(tmpstr, MAX, srcfile);
         getline(&tmpstr, &buffersize, srcfile);
 
         if(isemptyline(tmpstr))
         {
-            printf("empty line");
             fprintf(dstfile, "%s", "</br>");
         }
         else
         {
-            printf("not empty line");
             fprintf(dstfile, "%s\r\n", tmpstr);
         }
     }
