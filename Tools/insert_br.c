@@ -64,7 +64,7 @@ int main(int argc, char ** argv)
         exit(1);
     }
 
-    char tmpstr[MAX];
+    char* tmpstr = (char*) malloc(256);
     size_t buffersize = MAX;
 
     while (!feof(srcfile))
