@@ -5,12 +5,15 @@
 #include <stdint.h>
 #include <sys/types.h>
 
+
+//管理进程的命令，以'.'开头，如.exit
 typedef enum
 {
     META_COMMAND_SUCCESS,
     META_COMMAND_UNRECOGNIZED
 } MetaCommandResult;
 
+//为命令的执行作准备，检查参数合法性等。
 typedef enum
 {
     PREPARE_SUCCESS,
@@ -20,6 +23,7 @@ typedef enum
     PREPARE_NEGATIVE_ID
 } PrepareResult;
 
+//命令执行结果
 typedef enum
 {
     EXECUTE_SUCCESS,
@@ -27,6 +31,7 @@ typedef enum
     EXECUTE_FAIL
 } ExecuteResult;
 
+//命令类型
 typedef enum
 {
     STATEMENT_INSERT, STATEMENT_SELECT
@@ -41,6 +46,7 @@ typedef struct
     ssize_t input_length;
 } InputBuffer;
 
+//命令结构体
 typedef struct 
 {
     char* cmd_name;
@@ -48,12 +54,16 @@ typedef struct
     int cmd_num;
 } Command;
 
+//最大名称长度
 #define COLUME_USERNAME_SIZE 32
+//最大email长度
 #define COLUME_EMAIL_SIZE 255
 
+//数据库表中每一行存储的内容
 typedef struct 
 {
     uint32_t id;
+    //以'\0'结尾，所以要+1
     char username[COLUME_USERNAME_SIZE+1];
     char email[COLUME_EMAIL_SIZE+1];
 } Row;
@@ -75,6 +85,7 @@ typedef struct
 #define EMAIL_OFFSET (USERNAME_OFFSET + USERNAME_SIZE)
 #define ROW_SIZE (ID_SIZE + USERNAME_SIZE + EMAIL_SIZE)
 
+//序列化行，即将输入的行信息存入数据库表中的某一行
 void serialize_row(Row* source, void* destination)
 {
     memcpy(destination + ID_OFFSET, &(source->id), ID_SIZE);
@@ -82,6 +93,7 @@ void serialize_row(Row* source, void* destination)
     memcpy(destination + EMAIL_OFFSET, &(source->email), EMAIL_SIZE);
 }
 
+//反序列化行，将数据库表中的某一行的信息取出
 void deserialize_row(void* source, Row* destination)
 {
     memcpy(&(destination->id), source + ID_OFFSET, ID_SIZE);
@@ -89,17 +101,23 @@ void deserialize_row(void* source, Row* destination)
     memcpy(&(destination->email), source + EMAIL_OFFSET, EMAIL_SIZE);
 }
 
+//数据库中每一页的字节数
 #define PAGE_SIZE 4096
+//数据库表中最大页数
 #define TABLE_MAX_PAGES 100
+//每一页中的行数
 #define ROWS_PER_PAGE (PAGE_SIZE / ROW_SIZE)
+//数据库表中最多能存储的行数
 #define TABLE_MAX_ROWS (ROWS_PER_PAGE * TABLE_MAX_PAGES)
 
+//数据库表结构
 typedef struct 
 {
     uint32_t num_rows;
     void* pages[TABLE_MAX_PAGES];
 } Table;
 
+//新建一个数据库表，并初始化
 Table* new_table()
 {
     Table* table = (Table*) malloc(sizeof(Table));
@@ -112,6 +130,7 @@ Table* new_table()
     return table;
 }
 
+//释放数据库表
 void free_table(Table* table)
 {
     if(table == NULL)
@@ -127,6 +146,7 @@ void free_table(Table* table)
     free(table);
 }
 
+//获取将要执行操作的行指针
 void * row_slot(Table* table, uint32_t row_num)
 {
     uint32_t page_num = row_num / ROWS_PER_PAGE;
@@ -141,6 +161,7 @@ void * row_slot(Table* table, uint32_t row_num)
     return page + byte_offset;
 }
 
+//分配input buffer
 InputBuffer* new_input_buffer()
 {
 	InputBuffer* inputbuffer = (InputBuffer*) malloc(sizeof(InputBuffer));
@@ -151,11 +172,13 @@ InputBuffer* new_input_buffer()
 	return inputbuffer;
 }
 
+//打印提示符
 void print_prompt()
 {
     printf("db > ");
 }
 
+//去掉字符串前后的空格
 void trim(char** text, size_t length)
 {
     if(text == NULL || length == 0)
@@ -176,6 +199,7 @@ void trim(char** text, size_t length)
     (*text)[pos] = '\0';
 }
 
+//读取输入
 void read_input(InputBuffer* inputbuffer)
 {
     ssize_t bytes_read = getline(&(inputbuffer->buffer), &(inputbuffer->buffer_length), stdin);
@@ -191,12 +215,14 @@ void read_input(InputBuffer* inputbuffer)
     trim(&inputbuffer->buffer, inputbuffer->input_length);
 }
 
+//释放输入缓冲
 void close_inputbuffer(InputBuffer* inputbuffer)
 {
     free(inputbuffer->buffer);
     free(inputbuffer);
 }
 
+//退出进程
 void db_exit(void* arg1, void* arg2)
 {
     InputBuffer* inputbuffer = (InputBuffer*) arg1;
@@ -214,6 +240,7 @@ void db_show(void* arg1, void* arg2)
     printf("call show func\n");
 }
 
+//命令数组
 Command cmds[]=
 {
     {
@@ -227,6 +254,7 @@ Command cmds[]=
     }
 };
 
+//根据命令名称查找需要执行的命令
 PFunc find_func(char* cmd_name)
 {
     Command* cmd;
@@ -241,6 +269,7 @@ PFunc find_func(char* cmd_name)
     return NULL;
 }
 
+//执行元命令
 MetaCommandResult do_meta_command(InputBuffer* inputbuffer, Table* table)
 {
     PFunc func = find_func(inputbuffer->buffer);
@@ -252,6 +281,7 @@ MetaCommandResult do_meta_command(InputBuffer* inputbuffer, Table* table)
     return META_COMMAND_UNRECOGNIZED;
 }
 
+//为执行插入命令做准备
 PrepareResult prepare_insert(InputBuffer* inputbuffer, Statement* statement)
 {
     statement->type = STATEMENT_INSERT;
@@ -288,6 +318,7 @@ PrepareResult prepare_insert(InputBuffer* inputbuffer, Statement* statement)
     return PREPARE_SUCCESS;
 }
 
+//为执行命令作准备
 PrepareResult prepare_statement(InputBuffer* inputbuffer, Statement* statement)
 {
     if(strncmp(inputbuffer->buffer, "insert", 6) == 0)
@@ -303,11 +334,13 @@ PrepareResult prepare_statement(InputBuffer* inputbuffer, Statement* statement)
     return PREPARE_UNRECOGNIZED;
 }
 
+//打印行信息
 void print_row(Row* row)
 {
     printf("row info : id %d. username %s. email %s.\n", row->id, row->username, row->email);
 }
 
+//执行插入命令
 ExecuteResult execute_insert(Statement* statement, Table* table)
 {
     if(table->num_rows >= TABLE_MAX_ROWS)
@@ -322,6 +355,7 @@ ExecuteResult execute_insert(Statement* statement, Table* table)
     return EXECUTE_SUCCESS;
 }
 
+//执行查询命令
 ExecuteResult execute_select(Statement* statement, Table* table)
 {
     Row row;
