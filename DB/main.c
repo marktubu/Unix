@@ -128,41 +128,6 @@ typedef struct
     Pager* pager;
 } Table;
 
-Pager* pager_open(const char* filename)
-{
-    int fd = open(filename, O_RDWR | O_CREAT);
-    if(fd == -1)
-    {
-        printf("open file failed %s", filename);
-        exit(EXIT_FAILURE);
-    }
-
-    off_t file_length = lseek(fd, 0, SEEK_END);
-
-    Pager* pager = (Pager*) malloc(sizeof(Pager));
-    pager->file_descriptor = fd;
-    pager->file_length = file_length;
-
-    for(int i=0;i<TABLE_MAX_PAGES;i++)
-    {
-        pager->pages[i] = NULL;
-    }
-
-    return pager;
-}
-
-Table* db_open(const char* filename)
-{
-    Pager* pager = pager_open(filename);
-    uint32_t num_rows = pager->file_length / ROW_SIZE;
-
-    Table* table = (Table*) malloc(sizeof(Table));
-    table->num_rows = num_rows;
-    table->pager = pager;
-
-    return table;
-}
-
 void* get_page(Pager* pager, uint32_t page_num)
 {
     if(page_num >= TABLE_MAX_PAGES)
@@ -196,6 +161,52 @@ void* get_page(Pager* pager, uint32_t page_num)
     }
 
     return pager->pages[page_num];
+}
+
+Pager* pager_open(const char* filename)
+{
+    int fd = open(filename, O_RDWR | O_CREAT);
+    if(fd == -1)
+    {
+        printf("open file failed %s", filename);
+        exit(EXIT_FAILURE);
+    }
+
+    off_t file_length = lseek(fd, 0, SEEK_END);
+
+    Pager* pager = (Pager*) malloc(sizeof(Pager));
+    pager->file_descriptor = fd;
+    pager->file_length = file_length;
+
+    for(int i=0;i<TABLE_MAX_PAGES;i++)
+    {
+        pager->pages[i] = NULL;
+    }
+
+    uint32_t num_rows = pager->file_length / ROW_SIZE;
+    if(num_rows % ROWS_PER_PAGE > 0)
+    {
+        num_rows += 1;
+    }
+    
+    for(int i=0;i<num_rows;i++)
+    {
+        pager->pages[i] = get_page(pager, i);
+    }
+
+    return pager;
+}
+
+Table* db_open(const char* filename)
+{
+    Pager* pager = pager_open(filename);
+    uint32_t num_rows = pager->file_length / ROW_SIZE;
+
+    Table* table = (Table*) malloc(sizeof(Table));
+    table->num_rows = num_rows;
+    table->pager = pager;
+
+    return table;
 }
 
 //获取将要执行操作的行指针
