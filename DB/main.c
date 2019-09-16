@@ -128,6 +128,30 @@ typedef struct
     Pager* pager;
 } Table;
 
+void page_fill(Pager* pager, uint32_t page_num)
+{
+    if(page_num > TABLE_MAX_PAGES)
+    {
+        printf("page number out of bounds.");
+        exit(EXIT_FAILURE);
+    }
+
+    if(pager->pages[page_num] == NULL)
+    {
+        void* page = (void*) malloc(PAGE_SIZE);
+        lseek(pager->file_descriptor, page_num * PAGE_SIZE, SEEK_SET);
+        ssize_t bytes_read = read(pager->file_descriptor, page, PAGE_SIZE);
+
+        if(bytes_read == -1)
+        {
+            printf("read page failed.\n");
+            exit(EXIT_FAILURE);
+        }
+
+        pager->pages[page_num] = page;
+    }
+}
+
 void* get_page(Pager* pager, uint32_t page_num)
 {
     if(page_num >= TABLE_MAX_PAGES)
@@ -184,14 +208,16 @@ Pager* pager_open(const char* filename)
     }
 
     uint32_t num_rows = pager->file_length / ROW_SIZE;
+    uint32_t page_num = num_rows / ROWS_PER_PAGE;
     if(num_rows % ROWS_PER_PAGE > 0)
     {
-        num_rows += 1;
+        page_num += 1;
     }
     
-    for(int i=0;i<num_rows;i++)
+    for(int i=0;i<page_num;i++)
     {
-        pager->pages[i] = get_page(pager, i);
+        printf("get page %d\n", i);
+        page_fill(pager, i);
     }
 
     return pager;
