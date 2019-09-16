@@ -1,61 +1,98 @@
 #include <iostream>
 #include <string.h>
+#include <cstdint>
 
 using namespace std;
 
-bool isPalindrome(string & s, int start, int end)
+int getmaxlength(const string& s, int start, int end)
 {
-    while (start < end)
+    int max_length = 0;
+    while (--start >= 0 && ++end < s.length())
     {
-        if(s[start] != s[end])
+        if(s[start] == s[end])
         {
-            return false;
+            max_length += 2;
         }
-
-        start++;
-        end--;
+        else
+        {
+            break;
+        }
     }
-    
-    return true;
+
+    return max_length;
+}
+
+int getpalindromelength(const string& s, int pos)
+{
+    if(s.empty() || pos >= s.length())
+    {
+        return 0;
+    }
+
+    int max_length = 1;
+    if((pos-1)>=0 && (pos+1)<s.length() && s[pos-1] == s[pos+1])
+    {
+        int max_length1 = 1;
+        int start = pos;
+        int end = pos;
+
+        max_length1 += getmaxlength(s, start, end);
+
+        if(max_length1 > 1)
+        {
+            max_length = max_length1;
+        }
+    }
+
+    if((pos-1)>=0 && s[pos] == s[pos-1])
+    {
+        int max_length2 = 0;
+        int start = pos;
+        int end = pos-1;
+
+        max_length2 += getmaxlength(s, start, end);
+
+        if(max_length2 > max_length)
+        {
+            max_length = max_length2;
+        }
+    }
+
+    return max_length;
 }
 
 string longestPalindrome(string s) 
 {
-    if(s.length() == 0)
+    if(s.length() < 2)
     {
-        return string("");
+        return s;
     }
-    int maxLength = 0;
+
+    int max_length = 0;
     char result[1001];
-    for (int i = 0; i < s.length()-1; i++)
+    int target_pos = 0;
+    for (int i = 0; i < s.length(); i++)
     {
-        for (int j = i+1; j < s.length(); j++)
+        int len = getpalindromelength(s, i);
+        if(len > max_length)
         {
-            bool ispalindrome = isPalindrome(s, i, j);
-            if(ispalindrome)
-            {
-                int length = j-i+1;
-                if(length > maxLength)
-                {
-                    maxLength = length;
-                    memset(result, 0, sizeof(char) * 1001);
-                    s.copy(result, maxLength, i);
-                    result[maxLength] = '\0';
-                }
-            }
+            max_length = len;
+            target_pos = i;
         }
-        
     }
+
+    memset(result, 0, sizeof(char) * 1001);
+    int start = target_pos - max_length / 2;
+    s.copy(result, max_length, start);
+    result[max_length] = '\0';
 
     return std::string(result);
 }
 
 int main()
 {
-    //string ss("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
-    string ss("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    cout<<"ss length " << ss.length()<<endl;
+    string ss("aa");
     std::string ret = longestPalindrome(ss);
-    cout << "longestPalindrome : " << ret << endl;
+    cout << "longestPalindrome : " << ret << " ret length: " << ret.length() << endl;
     return 0;
 }
