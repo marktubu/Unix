@@ -232,7 +232,7 @@ void leaf_node_insert(Cursor* cursor, uint32_t key, Row* value)
 {
     void* node = get_page(cursor->table->pager, cursor->page_num);
 
-    uint32_t num_cells = leaf_node_num_cells(node);
+    uint32_t num_cells = *leaf_node_num_cells(node);
     if(num_cells >= LEAF_NODE_MAX_CELLS)
     {
         printf("node is full, can not insert.");
@@ -267,7 +267,7 @@ Cursor* table_start(Table* table)
     cursor->cell_num = 0;
 
     void* root_node = get_page(table->pager, table->root_page_num);
-    uint32_t num_cells = leaf_node_num_cells(root_node);
+    uint32_t num_cells = *leaf_node_num_cells(root_node);
     cursor->end_of_table = num_cells == 0;
 
     return cursor;
@@ -280,7 +280,7 @@ Cursor* table_end(Table* table)
     cursor->page_num = table->root_page_num;
     
     void* root_node = get_page(table->pager, table->root_page_num);
-    uint32_t num_cells = leaf_node_num_cells(root_node);
+    uint32_t num_cells = *leaf_node_num_cells(root_node);
     cursor->cell_num = num_cells;
     cursor->end_of_table = true;
 
@@ -514,11 +514,11 @@ void close_inputbuffer(InputBuffer* inputbuffer)
 void print_constants() 
 {
     printf("ROW_SIZE: %ld\n", ROW_SIZE);
-    printf("COMMON_NODE_HEADER_SIZE: %d\n", COMMON_NODE_HEADER_SIZE);
-    printf("LEAF_NODE_HEADER_SIZE: %d\n", LEAF_NODE_HEADER_SIZE);
-    printf("LEAF_NODE_CELL_SIZE: %d\n", LEAF_NODE_CELL_SIZE);
-    printf("LEAF_NODE_SPACE_FOR_CELLS: %d\n", LEAF_NODE_SPACE_FOR_CELLS);
-    printf("LEAF_NODE_MAX_CELLS: %d\n", LEAF_NODE_MAX_CELLS);
+    printf("COMMON_NODE_HEADER_SIZE: %ld\n", COMMON_NODE_HEADER_SIZE);
+    printf("LEAF_NODE_HEADER_SIZE: %ld\n", LEAF_NODE_HEADER_SIZE);
+    printf("LEAF_NODE_CELL_SIZE: %ld\n", LEAF_NODE_CELL_SIZE);
+    printf("LEAF_NODE_SPACE_FOR_CELLS: %ld\n", LEAF_NODE_SPACE_FOR_CELLS);
+    printf("LEAF_NODE_MAX_CELLS: %ld\n", LEAF_NODE_MAX_CELLS);
 }
 
 void print_leaf_node(void* node) 
