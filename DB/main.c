@@ -140,27 +140,68 @@ typedef struct
 typedef enum{NODE_INTERNAL, NODE_LEAF} NodeType;
 
 // common node header
-const uint32_t NODE_TYPE_SIZE = sizeof(uint8_t);
-const uint32_t NODE_TYPE_OFFSET = 0;
-const uint32_t IS_ROOT_SIZE = sizeof(uint8_t);
-const uint32_t IS_ROOT_OFFSET = NODE_TYPE_SIZE;
-const uint32_t PARENT_POINTER_SIZE = sizeof(uint32_t);
-const uint32_t PARENT_POINTER_OFFSET = IS_ROOT_OFFSET + PARENT_POINTER_SIZE;
-const uint8_t COMMON_NODE_HEADER_SIZE = NODE_TYPE_SIZE + IS_ROOT_SIZE + PARENT_POINTER_SIZE;
+#define NODE_TYPE_SIZE sizeof(uint8_t)
+#define NODE_TYPE_OFFSET 0
+#define IS_ROOT_SIZE sizeof(uint8_t)
+#define IS_ROOT_OFFSET NODE_TYPE_SIZE
+#define PARENT_POINTER_SIZE sizeof(uint32_t)
+#define PARENT_POINTER_OFFSET (IS_ROOT_OFFSET + PARENT_POINTER_SIZE)
+#define COMMON_NODE_HEADER_SIZE (NODE_TYPE_SIZE + IS_ROOT_SIZE + PARENT_POINTER_SIZE)
 
 // leaf node header
-const uint32_t LEAF_NODE_NUM_CELLS_SIZE = sizeof(uint32_t);
-const uint32_t LEAF_NODE_NUM_CELLS_OFFSET = COMMON_NODE_HEADER_SIZE + LEAF_NODE_NUM_CELLS_SIZE;
-const uint32_t LEAF_NODE_HEADER_SIZE = COMMON_NODE_HEADER_SIZE + LEAF_NODE_NUM_CELLS_SIZE;
+#define LEAF_NODE_NUM_CELLS_SIZE sizeof(uint32_t)
+#define LEAF_NODE_NUM_CELLS_OFFSET (COMMON_NODE_HEADER_SIZE + LEAF_NODE_NUM_CELLS_SIZE)
+#define LEAF_NODE_HEADER_SIZE (COMMON_NODE_HEADER_SIZE + LEAF_NODE_NUM_CELLS_SIZE)
 
 //leaf node body
-const uint32_t LEAF_NODE_KEY_SIZE = sizeof(uint32_t);
-const uint32_t LEAF_NODE_KEY_OFFSET = 0;
-const uint32_t LEAF_NODE_VALUE_SIZE = ROW_SIZE;
-const uint32_t LEAF_NODE_VALUE_OFFSET = LEAF_NODE_KEY_OFFSET + LEAF_NODE_KEY_SIZE;
-const uint32_t LEAF_NODE_CELL_SIZE = LEAF_NODE_KEY_SIZE + LEAF_NODE_VALUE_SIZE;
-const uint32_t LEAF_NODE_SPACE_FOR_CELLS = PAGE_SIZE - LEAF_NODE_HEADER_SIZE;
-const uint32_t LEAF_NODE_MAX_CELLS = LEAF_NODE_SPACE_FOR_CELLS / LEAF_NODE_CELL_SIZE;
+#define LEAF_NODE_KEY_SIZE sizeof(uint32_t)
+#define LEAF_NODE_KEY_OFFSET 0
+#define LEAF_NODE_VALUE_SIZE ROW_SIZE
+#define LEAF_NODE_VALUE_OFFSET (LEAF_NODE_KEY_OFFSET + LEAF_NODE_KEY_SIZE)
+#define LEAF_NODE_CELL_SIZE (LEAF_NODE_KEY_SIZE + LEAF_NODE_VALUE_SIZE)
+#define LEAF_NODE_SPACE_FOR_CELLS (PAGE_SIZE - LEAF_NODE_HEADER_SIZE)
+#define LEAF_NODE_MAX_CELLS (LEAF_NODE_SPACE_FOR_CELLS / LEAF_NODE_CELL_SIZE)
+
+
+void* get_page(Pager* pager, uint32_t page_num)
+{
+    if(page_num >= TABLE_MAX_PAGES)
+    {
+        printf("page number out of bounds.");
+        exit(EXIT_FAILURE);
+    }
+    if(pager->pages[page_num] == NULL)
+    {
+        void* page = (void*) malloc(PAGE_SIZE);
+        uint32_t num_pages = pager->file_length / PAGE_SIZE;
+
+        if(pager->file_length % PAGE_SIZE)
+        {
+            num_pages += 1;
+        }
+
+        if(page_num <= num_pages)
+        {
+            lseek(pager->file_descriptor, num_pages * PAGE_SIZE, SEEK_SET);
+            ssize_t bytes_read = read(pager->file_descriptor, page, PAGE_SIZE);
+
+            if(bytes_read == -1)
+            {
+                printf("read page failed.");
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        pager->pages[page_num] = page;
+
+        if(page_num >= pager->num_pages)
+        {
+            pager->num_pages = page_num + 1;
+        }
+    }
+
+    return pager->pages[page_num];
+}
 
 uint32_t* leaf_node_num_cells(void* node)
 {
@@ -288,46 +329,6 @@ void page_fill(Pager* pager, uint32_t page_num)
 
         pager->pages[page_num] = page;
     }
-}
-
-void* get_page(Pager* pager, uint32_t page_num)
-{
-    if(page_num >= TABLE_MAX_PAGES)
-    {
-        printf("page number out of bounds.");
-        exit(EXIT_FAILURE);
-    }
-    if(pager->pages[page_num] == NULL)
-    {
-        void* page = (void*) malloc(PAGE_SIZE);
-        uint32_t num_pages = pager->file_length / PAGE_SIZE;
-
-        if(pager->file_length % PAGE_SIZE)
-        {
-            num_pages += 1;
-        }
-
-        if(page_num <= num_pages)
-        {
-            lseek(pager->file_descriptor, num_pages * PAGE_SIZE, SEEK_SET);
-            ssize_t bytes_read = read(pager->file_descriptor, page, PAGE_SIZE);
-
-            if(bytes_read == -1)
-            {
-                printf("read page failed.");
-                exit(EXIT_FAILURE);
-            }
-        }
-
-        pager->pages[page_num] = page;
-
-        if(page_num >= pager->num_pages)
-        {
-            pager->num_pages = page_num + 1;
-        }
-    }
-
-    return pager->pages[page_num];
 }
 
 Pager* pager_open(const char* filename)
@@ -512,7 +513,7 @@ void close_inputbuffer(InputBuffer* inputbuffer)
 
 void print_constants() 
 {
-    printf("ROW_SIZE: %d\n", ROW_SIZE);
+    printf("ROW_SIZE: %ld\n", ROW_SIZE);
     printf("COMMON_NODE_HEADER_SIZE: %d\n", COMMON_NODE_HEADER_SIZE);
     printf("LEAF_NODE_HEADER_SIZE: %d\n", LEAF_NODE_HEADER_SIZE);
     printf("LEAF_NODE_CELL_SIZE: %d\n", LEAF_NODE_CELL_SIZE);
