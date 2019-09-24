@@ -3,6 +3,7 @@
         "vector": "cpp",
         "xstring": "cpp",
         "xiosbase": "cpp",
-        "cstdlib": "cpp"
+        "cstdlib": "cpp",
+        "iosfwd": "cpp"
     }
 }
