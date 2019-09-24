@@ -29,7 +29,7 @@ string longest(const string& s)
             }
         }
     }
-
+  
     for (size_t sz = 3; sz < len + 1; sz++)
     {
         for (size_t i = 0; i <= len - sz; i++)
