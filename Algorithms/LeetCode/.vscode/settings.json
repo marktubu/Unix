@@ -4,6 +4,8 @@
         "xstring": "cpp",
         "xiosbase": "cpp",
         "cstdlib": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "iostream": "cpp",
+        "ostream": "cpp"
     }
 }
