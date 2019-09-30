@@ -70,10 +70,8 @@ bool NQueue(Grid& grid, int colume)
 
     for (size_t i = 0; i < GRID_SIZE; i++)
     {
-        cout << "current " << colume << "  " << i << endl;
         if(IsSafe(grid, colume, i))
         {
-            cout << "is safe " << colume << "    " << i << endl;
             PlaceQueue(grid, colume, i);
             bool success = NQueue(grid, colume + 1);
             if(success)
