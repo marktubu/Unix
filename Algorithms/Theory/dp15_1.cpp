@@ -4,6 +4,23 @@
 
 using namespace std;
 
+int bottom_up_cut(const vector<int>& p, int n,vector<int>& r)
+{
+    r[0] = 0;
+    for (size_t j = 1; j <= n; j++)
+    {
+        int q = -1;
+        for (size_t i = 1; i <= j; i++)
+        {
+            q = max(q, p[i] + r[j-i]);
+        }
+        
+        r[j] = q;
+    }
+    
+    return r[n];
+}
+
 int cut_aux(const vector<int>& p, int n, vector<int>& r)
 {
     if(r[n] >= 0)
@@ -36,6 +53,7 @@ int main()
     int n = 12;
     vector<int> r(n+1, -1);
     int ret = cut(vec, n, r);
+    ret = bottom_up_cut(vec, n, r);
     cout << "result : " << ret << endl;
     return 0;
 }
