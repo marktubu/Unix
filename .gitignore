@@ -8,9 +8,17 @@
 *.idb
 *.vcxproj
 
+/**/*.vcxproj
+/**/*.filters
+
+
+
 /Debug
 /*/Debug
 /**/.*/
 
 !*.*
 /**/*.exe
+/**/.vs/
+
+.vs

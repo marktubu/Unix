@@ -125,6 +125,12 @@
   <ItemGroup>
     <ClInclude Include="Alloc.h" />
     <ClInclude Include="Allocator.h" />
+    <ClInclude Include="Constructor.h" />
+    <ClInclude Include="Functional.h" />
+    <ClInclude Include="Iterator.h" />
+    <ClInclude Include="TypeTraits.h" />
+    <ClInclude Include="UninitializedFunctions.h" />
+    <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Alloc.cpp" />

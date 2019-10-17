@@ -1,6 +1,6 @@
 #pragma once
 
-namespace TinySTL {
+namespace MySTL {
 
 	namespace {
 		template<bool, class Ta, class Tb>
