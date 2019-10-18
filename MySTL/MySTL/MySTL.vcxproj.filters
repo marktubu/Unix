@@ -42,10 +42,16 @@
     <ClInclude Include="Iterator.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Algorithm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Alloc.cpp">
       <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
