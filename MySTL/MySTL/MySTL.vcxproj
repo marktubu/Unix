@@ -129,6 +129,7 @@
     <ClInclude Include="Constructor.h" />
     <ClInclude Include="Functional.h" />
     <ClInclude Include="Iterator.h" />
+    <ClInclude Include="ReverseIterator.h" />
     <ClInclude Include="TypeTraits.h" />
     <ClInclude Include="UninitializedFunctions.h" />
     <ClInclude Include="Utility.h" />
