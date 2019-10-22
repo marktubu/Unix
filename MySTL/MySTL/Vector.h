@@ -123,3 +123,5 @@ namespace MySTL
 	};
 
 }
+
+#include "Src/Vector.impl.h"
