@@ -48,6 +48,15 @@
     <ClInclude Include="ReverseIterator.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Vector.impl.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="String.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Alloc.cpp">
@@ -55,6 +64,9 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\String.cpp">
+      <Filter>Src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

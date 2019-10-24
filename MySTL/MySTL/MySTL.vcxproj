@@ -130,13 +130,17 @@
     <ClInclude Include="Functional.h" />
     <ClInclude Include="Iterator.h" />
     <ClInclude Include="ReverseIterator.h" />
+    <ClInclude Include="Src\Vector.impl.h" />
+    <ClInclude Include="String.h" />
     <ClInclude Include="TypeTraits.h" />
     <ClInclude Include="UninitializedFunctions.h" />
     <ClInclude Include="Utility.h" />
+    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Src\Alloc.cpp" />
+    <ClCompile Include="Src\String.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

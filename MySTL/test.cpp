@@ -1,59 +1,47 @@
-#include <iostream>
-#include <sstream> 
+#include <stdio.h>
 #include <string>
-
-using namespace std;
-
-enum {_ALIGN = 8};
-
-size_t freelist_index(size_t __bytes) {
-        return (((__bytes) + (size_t)_ALIGN-1)/(size_t)_ALIGN - 1);
-}
-
-size_t fib(size_t n)
+#include <utility>
+#include <iostream>
+ 
+class MyString : public std::string
 {
-    size_t a{0};
-    size_t b{1};
-
-    for(size_t i{0}; i<n;++i)
-    {
-        const size_t old_b{b};
-        b+=a;
-        a = old_b;
-    }
-
-    return b;
-}
-
-void testFunc(int, void*)
-{
-    cout <<"test ya yuan "<<endl;
-}
-
-int& return_int_ref() {
-    int a {123};
-    return a; // Returning a reference to something on the stack!
-}
-
+public:
+	MyString() : std::string() {
+		printf("MyString:1\n");
+	}
+	
+	MyString(const char* data) : std::string(data) {
+		printf("MyString:2\n");
+	}
+	
+	MyString(MyString&& str) : std::string( std::move(str) ) {
+		printf("MyString:3\n");
+	}
+	
+	MyString operator = (MyString&& str){
+		this->swap(str);        // 试试把它注释掉你就知道了
+		printf("operator:1\n");
+	}
+};
+ 
 int main(int argc, char* argv[])
 {
-    for(int i=0;i<argc;++i)
-    {
-        cout << "arg " << i << " is: " << argv[i] << endl;
-    }
-
-    char* count = argv[1];
-
-    int number = std::atoi(count);
-
-    size_t ret = fib(number);
-    cout << "fib : " << ret << endl;
-
-    int &int_ref {return_int_ref()};
-
-    //std::cout << "Some stack overwriting intermediate print\n";
-
-    std::cout << int_ref << '\n';
-
-    return 0;
+	MyString str1 = "123";
+	std::cout << "str1=" << str1 << std::endl;
+	std::cout << "----------" << std::endl;
+#if 1
+	// 下面三句同等效果，呵呵
+	MyString str2 = "456";
+	str2 = (MyString &&)(str1);
+	//MyString str2 = static_cast<MyString&&>(str1);
+	//MyString str2 = std::move(str1);
+#else
+	// 下面三句同等效果，呵呵
+	MyString str2 = (MyString &&)(str1);
+	//MyString str2 = static_cast<MyString&&>(str1);
+	//MyString str2 = std::move(str1);
+#endif
+	std::cout << "str1=" << str1 << std::endl;
+	std::cout << "str2=" << str2 << std::endl;
+	return 0;
 }
