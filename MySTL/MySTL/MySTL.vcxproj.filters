@@ -57,6 +57,12 @@
     <ClInclude Include="String.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Ref.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Alloc.cpp">

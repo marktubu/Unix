@@ -129,6 +129,8 @@
     <ClInclude Include="Constructor.h" />
     <ClInclude Include="Functional.h" />
     <ClInclude Include="Iterator.h" />
+    <ClInclude Include="Memory.h" />
+    <ClInclude Include="Ref.h" />
     <ClInclude Include="ReverseIterator.h" />
     <ClInclude Include="Src\Vector.impl.h" />
     <ClInclude Include="String.h" />
