@@ -133,6 +133,7 @@
     <ClInclude Include="Ref.h" />
     <ClInclude Include="ReverseIterator.h" />
     <ClInclude Include="Src\Vector.impl.h" />
+    <ClInclude Include="Stack.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="TypeTraits.h" />
     <ClInclude Include="UninitializedFunctions.h" />
