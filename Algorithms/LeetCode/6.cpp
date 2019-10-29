@@ -1,18 +1,12 @@
 #include <iostream>
 #include <string.h>
-<<<<<<< HEAD
-=======
 #include <cstdint>
 #include <vector>
->>>>>>> 397566d7bd5e599002a5005d3d3d34afd4272333
 
 using namespace std;
 
 string convert(string s, int numRows) 
 {
-<<<<<<< HEAD
-    
-=======
     size_t len = s.length();
     if(numRows >= len || numRows == 1)
         return s;
@@ -38,17 +32,41 @@ string convert(string s, int numRows)
     }
     
     return ret;
->>>>>>> 397566d7bd5e599002a5005d3d3d34afd4272333
+}
+
+string convert2(string str, int numRows) 
+{
+    size_t len = str.length();
+    if(len <= numRows || numRows <= 1)
+        return str;
+    
+    vector<string> strs = vector<string>(numRows, string());
+
+    int current = 0;
+    int step = 1;
+    for (auto s : str)
+    {
+        strs[current].push_back(s);
+        current += step;
+        if(current <= 0 || current >= numRows-1)
+        {
+            step = -step;
+        }
+    }
+    
+    string ret;
+    for (size_t i = 0; i < strs.size(); i++)
+    {
+        ret = ret + strs[i];
+    }
+
+    return ret;
 }
 
 int main()
 {
-<<<<<<< HEAD
-    
-=======
     string s = "LEETCODEISHIRING";
     string ret = convert(s, 3);
     cout << "ret string is : " << ret <<endl;
->>>>>>> 397566d7bd5e599002a5005d3d3d34afd4272333
     return 0;
 }
