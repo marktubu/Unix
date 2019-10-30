@@ -5,8 +5,39 @@
 #include <algorithm> 
 #include <cmath>
 #include <time.h>
+#include <unordered_map>
 
 using namespace std;
+
+std::unordered_map<string, int> _map = {{"M", 1000}, {"CM", 900},{"D", 500},{"CD", 400},{"C", 100},
+                                        {"XC", 90},{"L", 50},{"XL", 40},{"X", 10},
+                                        {"IX", 9},{"V", 5},{"IV", 4},{"I", 1}};
+
+//13
+int romanToInt(string s) 
+{
+    int i=0;
+    int num = 0;
+    std::unordered_map<string, int>::const_iterator ret;
+    while (i<s.size())
+    {
+        string subs = s.substr(i, 2);
+        if((ret = _map.find(subs)) != _map.end())
+        {
+            num += ret->second;
+            i+=2;
+        }
+        else
+        {
+            string singlestr = s.substr(i, 1); 
+            ret = _map.find(singlestr);
+            num+=ret->second;
+            i+=1;
+        }
+    }
+    
+    return num;
+}
 
 vector<int> nums = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
 vector<string> table2 = {"M", "CM", "D", "CD","C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
@@ -93,8 +124,8 @@ int main(int argc, char* argv[])
 {
     clock_t start,end;
     start = clock();
-    string ret = intToRoman(1994);
-   
+    //string ret = intToRoman(1994);
+    int ret = romanToInt("MCMXCIV");
     end = clock();
     cout<<"time : " <<  (double)(end-start) << endl;
     cout << "ret: "<<ret<<endl;
