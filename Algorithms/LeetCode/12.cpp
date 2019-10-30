@@ -4,10 +4,32 @@
 #include <string>
 #include <algorithm> 
 #include <cmath>
+#include <time.h>
 
 using namespace std;
 
-string intToRoman(int num) 
+vector<int> nums = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+vector<string> table2 = {"M", "CM", "D", "CD","C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+
+//贪心算法
+string intToRoman(int num)
+{
+    int index = 0;
+    string ret;
+    while (num > 0 && index < nums.size())
+    {
+        while (num >= nums[index])
+        {
+            num -= nums[index];
+            ret += table2[index];
+        }
+        
+        index++;
+    }
+    return ret;
+}
+
+string intToRoman2(int num) 
 {
     if(num == 0)
         return "";
@@ -38,7 +60,7 @@ string intToRoman(int num)
     string ret;
     
     int left_num = (int) num / min_num;
-    cout << base << endl;
+    //cout << base << endl;
     if(left_num == 9)
     {
         ret = table[base] + table[base + 2];
@@ -69,8 +91,12 @@ string intToRoman(int num)
 
 int main(int argc, char* argv[])
 {
+    clock_t start,end;
+    start = clock();
     string ret = intToRoman(1994);
+   
+    end = clock();
+    cout<<"time : " <<  (double)(end-start) << endl;
     cout << "ret: "<<ret<<endl;
-
     return 0;
 }
