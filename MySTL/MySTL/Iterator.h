@@ -10,14 +10,20 @@ namespace MySTL {
 	struct bidirectional_iterator_tag :public forward_iterator_tag {};
 	struct random_access_iterator_tag :public bidirectional_iterator_tag {};
 
-	template <class T, class Distance> struct input_iterator
+	//五大类迭代器
+
+	//输入迭代器
+	template <class T, class Distance> 
+	struct input_iterator
 	{
 		typedef input_iterator_tag	iterator_category;
 		typedef T					value_type;
 		typedef Distance			difference_type;
-		typedef T* pointer;
-		typedef T& reference;
+		typedef T*					pointer;
+		typedef T&					reference;
 	};
+
+	//输出迭代器
 	struct output_iterator
 	{
 		typedef output_iterator_tag iterator_category;
@@ -26,34 +32,44 @@ namespace MySTL {
 		typedef void                pointer;
 		typedef void                reference;
 	};
-	template <class T, class Distance> struct forward_iterator
+
+	//前向迭代器
+	template <class T, class Distance> 
+	struct forward_iterator
 	{
 		typedef forward_iterator_tag	iterator_category;
 		typedef T						value_type;
 		typedef Distance				difference_type;
-		typedef T* pointer;
-		typedef T& reference;
+		typedef T*						pointer;
+		typedef T&						reference;
 	};
-	template <class T, class Distance> struct bidirectional_iterator
+
+	//双向迭代器
+	template <class T, class Distance> 
+	struct bidirectional_iterator
 	{
 		typedef bidirectional_iterator_tag	iterator_category;
 		typedef T							value_type;
 		typedef Distance					difference_type;
-		typedef T* pointer;
-		typedef T& reference;
+		typedef T*							pointer;
+		typedef T&							reference;
 	};
-	template <class T, class Distance> struct random_access_iterator
+
+	//随机访问迭代器
+	template <class T, class Distance> 
+	struct random_access_iterator
 	{
 		typedef random_access_iterator_tag	iterator_category;
 		typedef T							value_type;
 		typedef Distance					difference_type;
-		typedef T* pointer;
-		typedef T& reference;
+		typedef T*							pointer;
+		typedef T&							reference;
 	};
 
+	//通用迭代器
 	template<class Category, class T, class Distance = ptrdiff_t,
 		class Pointer = T *, class Reference = T &>
-		struct iterator
+	struct iterator
 	{
 		typedef Category	iterator_category;
 		typedef T			value_type;
@@ -62,6 +78,7 @@ namespace MySTL {
 		typedef Reference	reference;
 	};
 
+	//迭代器萃取器
 	template<class Iterator>
 	struct iterator_traits
 	{
@@ -71,6 +88,8 @@ namespace MySTL {
 		typedef typename Iterator::pointer				pointer;
 		typedef typename Iterator::reference 			reference;
 	};
+
+
 	template<class T>
 	struct iterator_traits<T*>
 	{
@@ -90,17 +109,22 @@ namespace MySTL {
 		typedef const T& reference;
 	};
 
+	//获得迭代器类型
 	template<class Iterator>
 	inline typename iterator_traits<Iterator>::iterator_category
 		iterator_category(const Iterator& It) {
 		typedef typename iterator_traits<Iterator>::iterator_category category;
 		return category();
 	}
+
+	//指向迭代器值类型的指针
 	template<class Iterator>
 	inline typename iterator_traits<Iterator>::value_type*
 		value_type(const Iterator& It) {
 		return static_cast<typename iterator_traits<Iterator>::value_type*>(0);
 	}
+
+	//指向迭代器距离
 	template<class Iterator>
 	inline typename iterator_traits<Iterator>::difference_type*
 		difference_type(const Iterator& It) {

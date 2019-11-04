@@ -103,6 +103,65 @@ namespace MySTL
 
 			iterator insert(iterator position, const value_type& val);
 			void insert(iterator position, size_type n, const value_type& val);
+
+			template<class InputIterator>
+			void insert(iterator position, InputIterator first, InputIterator last);
+
+			iterator erase(iterator position);
+			iterator erase(iterator first, iterator last);
+
+			void swap(list& x);
+			void clear();
+			void splice(iterator position, list& x);
+			void splice(iterator position, list& x, iterator i);
+			void splice(iterator position, list& x, iterator first, iterator last);
+
+			void remove(const value_type& val);
+
+			template<class Predicate>
+			void remove_if(Predicate pred);
+
+			void unique();
+
+			template<class BinaryPredicate>
+			void unique(BinaryPredicate binary_pred);
+
+			void merge(list& x);
+
+			template<class Compare>
+			void merge(list& x, Compare comp);
+
+			void sort();
+
+			template<class Compare>
+			void sort(Compare comp);
+
+			void reverse();
+
+		private:
+			void ctor_aux(size_type n, const value_type& val, std::true_type);
+
+			template<class InputIterator>
+			void ctor_aux(InputIterator first, InputIterator last, std::false_type);
+
+			node_ptr new_node(const T& val = T());
+			void delete_node(node_ptr p);
+			void insert_aux(iterator position, size_type n, const T& val, std::true_type);
+
+			template<class InputIterator>
+			void insert_aux(iterator position, InputIterator first, InputIterator last, std::false_type);
+
+			const_iterator change_iterator_to_const_iterator(iterator& it) const;
+
+		public:
+			template<class T>
+			friend void swap(list<T>& x, list<T>& y);
+
+			template<class T>
+			friend bool operator==(const list<T>& lhs, const list<T>& rhs);
+
+			template<class T>
+			friend bool operator!=(const list<T>& lhs, const list<T>& rhs);
 		};
 	}
 }

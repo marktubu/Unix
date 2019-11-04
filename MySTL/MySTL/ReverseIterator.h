@@ -9,12 +9,14 @@ namespace MySTL
 	{
 	public:
 		typedef Iterator iterator_type;
+		//反向迭代器五大类型和普通迭代器完全相同，可直接萃取出来
 		typedef typename iterator_traits<Iterator>::iterator_category iterator_category;
 		typedef typename iterator_traits<Iterator>::value_type value_type;
 		typedef typename iterator_traits<Iterator>::difference_type difference_type;
 		typedef typename iterator_traits<Iterator>::pointer pointer;
-		typedef const pointer const_pointer;
 		typedef typename iterator_traits<Iterator>::reference reference;
+
+		typedef const pointer const_pointer;
 		typedef const reference const_reference;
 
 	private:
