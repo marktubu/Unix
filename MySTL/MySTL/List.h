@@ -29,6 +29,7 @@ namespace MySTL
 			}
 		};
 
+		//双向链表使用 bidirectional_iterator_tag 的迭代器
 		template<class T>
 		struct list_iterator : public iterator<bidirectional_iterator_tag, T>
 		{

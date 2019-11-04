@@ -2,6 +2,7 @@
 
 namespace MySTL
 {
+	//一元函数
 	template<class _Arg, class _Return>
 	struct unary_function
 	{
@@ -9,6 +10,7 @@ namespace MySTL
 		typedef _Return return_type;
 	};
 
+	//二元函数
 	template<class _Arg1, class _Arg2, class _Return>
 	struct binary_function
 	{
@@ -48,6 +50,11 @@ namespace MySTL
 		result_type operatora()(const first_argument_type& _x, const second_argument_type& _y) const { return _x / _y; }
 	};
 
+	template<class T>
+	struct module : public binary_function<T, T, T>
+	{
+		result_type operatora()(const first_argument_type& _x, const second_argument_type& _y) const { return _x % _y; }
+	};
 
 	//关系运算符
 	template<class T>
@@ -60,7 +67,7 @@ namespace MySTL
 	};
 
 	template<class T>
-	struct more : public binary_function<T, T, bool>
+	struct greater : public binary_function<T, T, bool>
 	{
 		result_type operator()(const first_argument_type& x, const second_argument_type& y)
 		{
