@@ -2,46 +2,42 @@
 #include <string>
 #include <utility>
 #include <iostream>
+
+using namespace std;
  
-class MyString : public std::string
+class Foo
 {
 public:
-	MyString() : std::string() {
-		printf("MyString:1\n");
-	}
-	
-	MyString(const char* data) : std::string(data) {
-		printf("MyString:2\n");
-	}
-	
-	MyString(MyString&& str) : std::string( std::move(str) ) {
-		printf("MyString:3\n");
-	}
-	
-	MyString operator = (MyString&& str){
-		this->swap(str);        // 试试把它注释掉你就知道了
-		printf("operator:1\n");
-	}
+    Foo(){ cout << "constructor" << endl;}
+	Foo(int _x) : x(_x){ cout << "constructor 2" << endl;}
+    Foo(const Foo& v){ cout << "copy constructor" << endl;}
+    ~Foo(){ cout << "deconstructor " << x << endl;}
+    
+	Foo operator=(Foo& vec);
+	Foo& operator=(const Foo& foo);
+
+    int x;
 };
- 
+
+Foo Foo::operator=(Foo& foo)
+{
+	cout << "operator = 1" << endl;
+	Foo f;
+	f.x = foo.x;
+	return f;
+}
+
+Foo& Foo::operator=(const Foo& foo)
+{
+	cout << "operator = 2" << endl;
+	this->x = foo.x;
+	return *this;
+}
+
 int main(int argc, char* argv[])
 {
-	MyString str1 = "123";
-	std::cout << "str1=" << str1 << std::endl;
-	std::cout << "----------" << std::endl;
-#if 1
-	// 下面三句同等效果，呵呵
-	MyString str2 = "456";
-	str2 = (MyString &&)(str1);
-	//MyString str2 = static_cast<MyString&&>(str1);
-	//MyString str2 = std::move(str1);
-#else
-	// 下面三句同等效果，呵呵
-	MyString str2 = (MyString &&)(str1);
-	//MyString str2 = static_cast<MyString&&>(str1);
-	//MyString str2 = std::move(str1);
-#endif
-	std::cout << "str1=" << str1 << std::endl;
-	std::cout << "str2=" << str2 << std::endl;
+	Foo v(1);
+	Foo v2 = v;
+	v2.x = 2;
 	return 0;
 }
