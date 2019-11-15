@@ -1,3 +1,5 @@
+#include <boost/any.hpp>
+
 class EventLoop : boost::noncopyable
 {
 private:
