@@ -1,4 +1,11 @@
-#include <boost/any.hpp>
+#ifndef MUDUO_NET_EVENTLOOP
+#define MUDUO_NET_EVENTLOOP
+
+
+#include "thread/Thread.h"
+
+namespace muduo
+{
 
 class EventLoop : boost::noncopyable
 {
@@ -13,6 +20,8 @@ public:
     ~EventLoop();
 
 	void loop();
+	
+	static EventLoop* getEventLoopOfCurrentThread();
 
 	void assertInLoopThread()
 	{
@@ -23,3 +32,6 @@ public:
 	}
 };
 
+}
+
+#endif
