@@ -34,17 +34,17 @@ void Channel::handleEvent()
 
 	if(_revents & (POLLERR | POLLNVAL))
 	{
-		if(errorEventCallback) errorEventCallback();
+		if(errorCallback) errorCallback();
 	}
 
 	if(_revents & (POLLIN | POLLPRI | POLLRDHUP))
 	{
-		if(readEventCallback) readEventCallback();
+		if(readCallback) readCallback();
 	}
 
 	if(_revents & POLLOUT)
 	{
-		if(writeEventCallback) writeEventCallback();
+		if(writeCallback) writeCallback();
 	}
 }
 

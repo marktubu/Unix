@@ -1,6 +1,7 @@
 #include "EventLoop.h"
 #include "Channel.h"
 #include "Poller.h"
+#include "TimerQueue.h"
 
 #include "logging/Logging.h"
 
@@ -17,7 +18,8 @@ EventLoop::EventLoop()
 	:_looping(false),
 	 _quit(false),
 	 _threadId(CurrentThread::tid()),
-	 _poller(new Poller(this))
+	 _poller(new Poller(this)),
+	 _timerQueue(new TimerQueue(this))
 {
 	LOG_TRACE << "EventLoop created " << this << " in thread " << _threadId;
 	if(t_loopInThisThread)
@@ -47,7 +49,7 @@ void EventLoop::loop()
 	while(!_quit)
 	{
 		_activeChannels.clear();
-		_poller->poll(kPollTimeMs, &_activeChannels);
+		_pollReturnTime = _poller->poll(kPollTimeMs, &_activeChannels);
 		for(ChannelList::iterator it = _activeChannels.begin();
 				it!=_activeChannels.end();++it)
 		{
@@ -57,6 +59,23 @@ void EventLoop::loop()
 
 	LOG_TRACE << "EventLoop " << this << " stop looping";
 	_looping = false;
+}
+
+TimerId EventLoop::runAt(const Timestamp& time, const TimerCallback& cb)
+{
+	return _timerQueue->addTimer(cb, time, 0.0);
+}
+
+TimerId EventLoop::runAfter(double delay, const TimerCallback& cb)
+{
+	Timestamp time(addTime(Timestamp::now(), delay));
+	return runAt(time, cb);
+}
+
+TimerId EventLoop::runEvery(double interval, const TimerCallback& cb)
+{
+	Timestamp time(addTime(Timestamp::now(), interval));
+	return _timerQueue->addTimer(cb, time, interval);
 }
 
 void EventLoop::quit()

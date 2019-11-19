@@ -19,7 +19,7 @@ int main()
 
 	int timerfd = ::timerfd_create(CLOCK_MONOTONIC, TFD_NONBLOCK | TFD_CLOEXEC);
 	muduo::Channel channel(&loop, timerfd);
-	channel.setReadEventCallback(timeout);
+	channel.setReadCallback(timeout);
 	channel.enableReading();
 
 	struct itimerspec howlong;
@@ -31,3 +31,4 @@ int main()
 
 	::close(timerfd);
 }
+

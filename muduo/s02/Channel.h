@@ -1,3 +1,7 @@
+#ifndef MUDUO_NET_CHANNEL_H
+#define MUDUO_NET_CHANNEL_H
+
+
 #include <boost/function.hpp>
 #include <boost/noncopyable.hpp>
 
@@ -15,19 +19,19 @@ public:
 	Channel(EventLoop* loop, int fd);
 
 	void handleEvent();
-	void setReadEventCallback(const EventCallback& cb)
+	void setReadCallback(const EventCallback& cb)
 	{
-		readEventCallback = cb;
+		readCallback = cb;
 	}
 
-	void setWriteEventCallback(const EventCallback& cb)
+	void setWriteCallback(const EventCallback& cb)
 	{
-		writeEventCallback = cb;
+		writeCallback = cb;
 	}
 
-	void setErrorEventCallback(const EventCallback& cb)
+	void setErrorCallback(const EventCallback& cb)
 	{
-		errorEventCallback = cb;
+		errorCallback = cb;
 	}
 
 	void enableReading(){ _events |= kReadEvent; update();}
@@ -52,9 +56,9 @@ private:
 	static const int kReadEvent;
 	static const int kWriteEvent;
 
-	EventCallback readEventCallback;
-	EventCallback writeEventCallback;
-	EventCallback errorEventCallback;
+	EventCallback readCallback;
+	EventCallback writeCallback;
+	EventCallback errorCallback;
 
 	EventLoop* _loop;
 	int _fd;
@@ -66,3 +70,5 @@ private:
 
 }
 
+
+#endif
