@@ -78,6 +78,23 @@ TimerId EventLoop::runEvery(double interval, const TimerCallback& cb)
 	return _timerQueue->addTimer(cb, time, interval);
 }
 
+void EventLoop::runInLoop(const Functor& cb)
+{
+	if(isInLoopThread())
+	{
+		cb();
+	}
+	else
+	{
+		queueInLoop(cb);
+	}
+}
+
+void EventLoop::queueInLoop(const Functor& func)
+{
+	
+}
+
 void EventLoop::quit()
 {
 	_quit = true;
