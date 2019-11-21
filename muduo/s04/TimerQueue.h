@@ -25,6 +25,7 @@ public:
 	~TimerQueue();
 
 	TimerId addTimer(const TimerCallback& cb, Timestamp when, double interval);
+	void addTimerInLoop(Timer* timer);
 
 private:
 	typedef std::pair<Timestamp, Timer*> Entry;
