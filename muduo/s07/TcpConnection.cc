@@ -58,13 +58,13 @@ void TcpConnection::connectDestroyed()
 	_loop->removeChannel(get_pointer(_channel));
 }
 
-void TcpConnection::handleRead()
+void TcpConnection::handleRead(Timestamp receivedTime)
 {
-	char buf[65536];
-	ssize_t n = ::read(_channel->fd(), buf, sizeof buf);
+	int savedErrno = 0;
+	ssize_t n = _inputBuffer.readFd(_channel->fd(), &savedErrno);
 	if(n>0)
 	{
-		_messageCallback(shared_from_this(), buf, n);
+		_messageCallback(shared_from_this(), &_inputBuffer, receivedTime);
 	}
 	else if(n==0)
 	{
@@ -72,6 +72,8 @@ void TcpConnection::handleRead()
 	}
 	else
 	{
+		errno = savedErrno;
+		LOG_SYSERR << "TcpConnection::handleRead() \n";
 		handleError();
 	}
 }
