@@ -31,7 +31,7 @@ void Channel::update()
 	_loop->updateChannel(this);
 }
 
-void Channel::handleEvent()
+void Channel::handleEvent(Timestamp receivedTime)
 {
 	_eventHandling = true;
 	LOG_INFO << "Channel::handleEvent" << _revents;
