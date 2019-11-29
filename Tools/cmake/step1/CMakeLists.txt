@@ -8,4 +8,5 @@ add_executable(Tutorial tutorial.cc)
 
 target_include_directories(Tutorial PUBLIC "${PROJECT_BINARY_DIR}")
 
-
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
