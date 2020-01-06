@@ -72,6 +72,28 @@ void print(T (&arr)[N])
     }
 }
 
+//选择排序(升序)   
+void selectSort(int a[], int n){
+    int temp;
+   //循环开始，次数为数组长度-1
+    for(int i=0;i<n-1;i++){
+          //定义最小值的位置为每次循环的首位
+        int min = i;
+            //这个循环作用是找到最小值的位置
+        for(int j=i+1;j<n;j++){
+            if(a[j] < a[min]){
+                min=j;
+            }
+        }
+         //判断是否进行了交换，是则将最小值放到每次循环开始的首位
+        if(min != i){
+            temp = a[min];
+            a[min]=a[i];
+            a[i]=temp;
+        }
+    } 
+}
+
 int main()
 {
     //int array
