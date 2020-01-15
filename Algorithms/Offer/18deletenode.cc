@@ -37,7 +37,7 @@ void delete_node(ListNode** phead, ListNode* beDeleted)
         
         node->next = nullptr;
         delete beDeleted;
-        beDeleted = nullptr
+        beDeleted = nullptr;
     }
     
 }
