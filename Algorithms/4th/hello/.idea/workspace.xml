@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c1e4f978-b3bd-4ae1-84e9-9e1170bce808" name="Default" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="DISPLAY_NOTIFICATION_POPUP" value="false" />
+    <option name="CLEAR_OUTPUT_DIRECTORY" value="false" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+    <option name="SCHEME" value="Project" />
+  </component>
+  <component name="FindBugs-IDEA-Workspace">
+    <analyzeAfterCompile>true</analyzeAfterCompile>
+    <toolWindowToFront>false</toolWindowToFront>
+  </component>
+  <component name="ProjectId" id="1shbHNbwDUVWYvdhbY86Tbiaf8s" />
+  <component name="ProjectViewState">
+    <option name="abbreviatePackageNames" value="true" />
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="false" />
+    <option name="showModules" value="false" />
+    <option name="sortByType" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ToolWindowMessages.ShowToolbar" value="false" />
+    <property name="ToolWindowRun.ShowToolbar" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="terminal" />
+  </component>
+  <component name="RunManager" selected="Application.SortQuick">
+    <configuration name="HelloWorld" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="HelloWorld" />
+      <module name="Algorithms, Part I" />
+      <method v="2" />
+    </configuration>
+    <configuration name="SortInsertion" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="SortInsertion" />
+      <module name="Algorithms, Part I" />
+      <method v="2" />
+    </configuration>
+    <configuration name="SortMerge" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="SortMerge" />
+      <module name="Algorithms, Part I" />
+      <method v="2" />
+    </configuration>
+    <configuration name="SortMerge1" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="SortMerge1" />
+      <module name="Algorithms, Part I" />
+      <method v="2" />
+    </configuration>
+    <configuration name="SortQuick" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="SortQuick" />
+      <module name="Algorithms, Part I" />
+      <method v="2" />
+    </configuration>
+    <configuration name="SortSelection" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="SortSelection" />
+      <module name="Algorithms, Part I" />
+      <method v="2" />
+    </configuration>
+    <configuration name="SortShell" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="SortShell" />
+      <module name="Algorithms, Part I" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="761" height="232" key="GridCell.Tab.0.bottom" timestamp="1621849856963">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="761" height="232" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1621849856963" />
+    <state width="761" height="232" key="GridCell.Tab.0.center" timestamp="1621849856962">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="761" height="232" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1621849856962" />
+    <state width="761" height="232" key="GridCell.Tab.0.left" timestamp="1621849856962">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="761" height="232" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1621849856962" />
+    <state width="761" height="232" key="GridCell.Tab.0.right" timestamp="1621849856962">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="761" height="232" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1621849856962" />
+    <state x="536" y="119" key="SettingsEditor" timestamp="1621328231519">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="536" y="119" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1621328231519" />
+    <state x="1074" y="233" width="672" height="678" key="search.everywhere.popup" timestamp="1621840336142">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1074" y="233" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1621840336142" />
+  </component>
+</project>
